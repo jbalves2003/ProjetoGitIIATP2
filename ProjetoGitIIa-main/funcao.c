@@ -1,5 +1,6 @@
 #include "funcao.h"
 #include <math.h>
+#include <stdio.h>
 
 int calcula_fit(int *sol, float *valores_moedas, int n_moedas, float valor_objetivo) {
     float soma = 0.0;
