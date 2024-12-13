@@ -5,8 +5,8 @@
 #include "algoritmo_evolutivo.h"
 #include "utils.h"
 
-#define ITERACOES 1000
-#define DEFAULT_RUNS 10
+#define ITERACOES 100000
+#define DEFAULT_RUNS 100
 
 int main(int argc, char *argv[]) {
     char nome_fich[100];
@@ -48,6 +48,8 @@ int main(int argc, char *argv[]) {
         printf("\nMENU:\n");
         printf("1 - Trepa Colinas\n");
         printf("2 - Algoritmo Evolutivo\n");
+        printf("3 - Hibrido 1 (Trepa-Colinas + Algoritmo Evolutivo)\n");
+        printf("4 - Hibrido 2 (Algoritmo Evolutivo + Trepa-Colinas)\n");
         printf("0 - Sair\n");
         printf("Escolha uma opcao: ");
         scanf("%d", &opcao);
@@ -87,12 +89,37 @@ int main(int argc, char *argv[]) {
                 break;
             }
 
+            case 3: {
+                printf("Iniciando Hibrido 1 (Trepa-Colinas + Algoritmo Evolutivo)...\n");
+
+                // Executa o método híbrido 1
+              int custo_hibrido_1 = metodo_hibrido(best, valores_moedas, n_moedas, valor_objetivo, 20, ITERACOES, DEFAULT_RUNS);
+
+
+                // Exibe o resultado do híbrido 1
+                escreve_sol(best, n_moedas, valores_moedas, "Melhor solucao Hibrido 1:");
+                printf("Custo final Hibrido 1: %d\n", custo_hibrido_1);
+                break;
+            }
+
+            case 4: {
+                printf("Iniciando Hibrido 2 (Algoritmo Evolutivo + Trepa-Colinas)...\n");
+
+                // Executa o método híbrido 2
+                int custo_hibrido_2 = metodo_hibrido_2(best, valores_moedas, n_moedas, valor_objetivo, 20, ITERACOES, DEFAULT_RUNS);
+
+                // Exibe o resultado do híbrido 2
+                escreve_sol(best, n_moedas, valores_moedas, "Melhor solucao Hibrido 2:");
+                printf("Custo final Hibrido 2: %d\n", custo_hibrido_2);
+                break;
+            }
+
             case 0:
                 printf("Saindo...\n");
                 break;
 
             default:
-                printf("Opção inválida! Tente novamente.\n");
+                printf("Opcao invalida! Tente novamente.\n");
         }
     } while (opcao != 0);
 

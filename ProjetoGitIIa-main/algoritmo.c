@@ -4,6 +4,9 @@
 #include "utils.h"
 #include <stdio.h>
 #include <tgmath.h>
+#include "algoritmo_evolutivo.h"
+int num_iter = 1000;
+
 
 // Gera um vizinho
 void gera_vizinho(int a[], int b[], int n, float valor_objetivo, float *valores_moedas) {
@@ -66,4 +69,50 @@ int trepa_colinas(int sol[], float *valores_moedas, int n_moedas, float valor_ob
     }
     free(nova_sol);
     return custo;
+}
+
+
+// Função híbrida: Trepa-Colinas + Algoritmo Evolutivo
+int metodo_hibrido(int *melhor_sol, float *valores_moedas, int n_moedas, float valor_objetivo, int tamanho_pop, int geracoes, int num_iter) {
+    // Passo 1: Inicializar a solução com Trepa-Colinas
+    printf("Iniciando Trepa-Colinas...\n");
+    int custo_final = trepa_colinas(melhor_sol, valores_moedas, n_moedas, valor_objetivo, num_iter);
+
+    // Passo 2: Melhorar com Algoritmo Evolutivo
+    printf("Iniciando Algoritmo Evolutivo...\n");
+    custo_final = algoritmo_evolutivo(melhor_sol, valores_moedas, n_moedas, valor_objetivo, tamanho_pop, geracoes);
+
+    return custo_final;
+}
+
+// Função híbrida: Algoritmo Evolutivo + Trepa-Colinas
+int metodo_hibrido_2(int *melhor_sol, float *valores_moedas, int n_moedas, float valor_objetivo, int tamanho_pop, int geracoes, int num_iter) {
+    // Passo 1: Inicializar com Algoritmo Evolutivo
+    printf("Iniciando Algoritmo Evolutivo...\n");
+    int custo_inicial = algoritmo_evolutivo(melhor_sol, valores_moedas, n_moedas, valor_objetivo, tamanho_pop, geracoes);
+
+    // Passo 2: Melhorar com Trepa-Colinas
+    printf("Iniciando Trepa-Colinas...\n");
+    int custo_final = trepa_colinas(melhor_sol, valores_moedas, n_moedas, valor_objetivo, num_iter);
+
+    return custo_final;
+}
+
+
+//Comparar Hibridos
+void compara_abordagens_hibridas(int *melhor_sol_1, int *melhor_sol_2, float *valores_moedas, int n_moedas, float valor_objetivo, int tamanho_pop, int geracoes) {
+    // Abordagem híbrida 1: Trepa-Colinas + Algoritmo Evolutivo
+    int custo_hibrido_1 = metodo_hibrido(melhor_sol_1, valores_moedas, n_moedas, valor_objetivo, tamanho_pop, geracoes, num_iter);
+
+    // Abordagem híbrida 2: Algoritmo Evolutivo + Trepa-Colinas
+    int custo_hibrido_2 = metodo_hibrido_2(melhor_sol_2, valores_moedas, n_moedas, valor_objetivo, tamanho_pop, geracoes, num_iter);
+
+    printf("Custo final - Hibrido 1 (Trepa-Colinas + Algoritmo Evolutivo): %d\n", custo_hibrido_1);
+    printf("Custo final - Hibrido 2 (Algoritmo Evolutivo + Trepa-Colinas): %d\n", custo_hibrido_2);
+
+    if (custo_hibrido_1 < custo_hibrido_2) {
+        printf("Hibrido 1 (Trepa-Colinas + Algoritmo Evolutivo) e o melhor metodo!\n");
+    } else {
+        printf("Hibrido 2 (Algoritmo Evolutivo + Trepa-Colinas) e o melhor metodo!\n");
+    }
 }
